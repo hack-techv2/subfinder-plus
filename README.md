@@ -22,7 +22,20 @@ Use Subfinder-plus only against domains and systems you own or are explicitly au
 
 ### Download a release
 
-Download `subfinder-plus-windows-amd64.exe` for Windows or `subfinder-plus-linux-amd64` for Linux from the [latest Subfinder-plus release](https://github.com/hack-techv2/subfinder-plus/releases/latest), together with `checksums.txt`. Verify the selected binary against `checksums.txt`, then place it on your `PATH`.
+Download `subfinder-plus-windows-amd64.exe` for Windows or `subfinder-plus-linux-amd64` for Linux from the [latest Subfinder-plus release](https://github.com/hack-techv2/subfinder-plus/releases/latest), together with `checksums.txt`. Verify the selected binary against `checksums.txt`, then rename it to match the documented command:
+
+```sh
+# Linux
+chmod +x subfinder-plus-linux-amd64
+mv subfinder-plus-linux-amd64 subfinder-plus
+```
+
+```powershell
+# Windows PowerShell
+Rename-Item subfinder-plus-windows-amd64.exe subfinder-plus.exe
+```
+
+Place the renamed file on your `PATH`, then run `subfinder-plus -h`.
 
 ### Build from source
 
