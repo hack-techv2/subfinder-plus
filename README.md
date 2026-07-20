@@ -22,7 +22,7 @@ Use Subfinder-plus only against domains and systems you own or are explicitly au
 
 ### Download a release
 
-Download the current archive from the [latest Subfinder-plus release](https://github.com/hack-techv2/subfinder-plus/releases/latest), verify its checksum, then place the platform binary on your `PATH`.
+Download `subfinder-plus-windows-amd64.exe` for Windows or `subfinder-plus-linux-amd64` for Linux from the [latest Subfinder-plus release](https://github.com/hack-techv2/subfinder-plus/releases/latest), together with `checksums.txt`. Verify the selected binary against `checksums.txt`, then place it on your `PATH`.
 
 ### Build from source
 
