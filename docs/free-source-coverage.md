@@ -12,4 +12,4 @@ This reference describes the maintained free-access behavior in Subfinder-plus, 
 | CertSpotter | Yes | Yes | Queries the public issuance endpoint anonymously; a bearer token can raise service limits. |
 | URLScan | Yes | Yes | Queries the public search endpoint anonymously; an API key can raise service limits. |
 
-Third-party endpoints, quotas, terms, and availability can change without notice. `-all` also enables inherited sources that may require credentials. Consult `subfinder -ls` and your provider configuration for the current runtime source selection.
+Third-party endpoints, quotas, terms, and availability can change without notice. `-all` also enables inherited sources that may require credentials. Consult `subfinder-plus -ls` and your provider configuration for the current runtime source selection.

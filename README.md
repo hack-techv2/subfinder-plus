@@ -9,6 +9,8 @@ Subfinder-plus is a HackTech-maintained fork of ProjectDiscovery Subfinder. It p
 
 This is not a full merger with BBOT and is not affiliated with or endorsed by ProjectDiscovery or the BBOT project.
 
+> **Update notice:** Update only from this fork's [Subfinder-plus releases](https://github.com/hack-techv2/subfinder-plus/releases). Do not use the inherited `-up` flag: it targets ProjectDiscovery releases, and inherited `-version` output does not uniquely identify a Subfinder-plus release. Use `-duc` to suppress the inherited update check.
+
 ## Scope and authorization
 
 Use Subfinder-plus only against domains and systems you own or are explicitly authorized to assess. Passive data sources remain subject to their own terms, quotas, and availability.
@@ -96,7 +98,7 @@ Report suspected vulnerabilities according to [SECURITY.md](SECURITY.md). Do not
 
 ## Attribution
 
-Subfinder-plus builds on ProjectDiscovery Subfinder. Selected public-source behavior was adapted from or inspired by BBOT as described in the [fork maintenance reference](docs/fork-maintenance.md). See [THANKS.md](THANKS.md) for attribution details.
+Subfinder-plus builds on [ProjectDiscovery Subfinder](https://github.com/projectdiscovery/subfinder). Selected public-source behavior was adapted from or inspired by [BBOT](https://github.com/blacklanternsecurity/bbot) as described in the [fork maintenance reference](docs/fork-maintenance.md). See [THANKS.md](THANKS.md) for additional attribution details.
 
 ## License
 

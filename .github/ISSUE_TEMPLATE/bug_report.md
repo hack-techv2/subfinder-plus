@@ -7,9 +7,9 @@ assignees: ''
 
 ---
 
-## Subfinder-plus version
+## Subfinder-plus release and CLI version
 
-<!-- Include the exact version or commit, for example output from `subfinder -version`. -->
+<!-- Include the exact Subfinder-plus release tag or source commit, and paste the output from `subfinder-plus -version`. The inherited version output alone can be ambiguous. -->
 
 ## Operating system
 

@@ -20,6 +20,19 @@ $readme = Get-Content -Raw (Join-Path $repoRoot 'README.md')
 $maintenance = Get-Content -Raw (Join-Path $repoRoot 'docs/fork-maintenance.md')
 $allWorkflows = $ci + $release
 
+$initialUpstreamMatches = [regex]::Matches($maintenance, '(?m)^- Initial upstream base: `([0-9a-f]{40})`\.$')
+if ($initialUpstreamMatches.Count -ne 1) {
+    throw 'Fork maintenance must record exactly one 40-character Initial upstream base'
+}
+if ($initialUpstreamMatches[0].Groups[1].Value -ne 'd0ea1029cf87ff965804fc399d12e4502c7436b2') {
+    throw 'Fork maintenance changed the immutable Initial upstream base'
+}
+
+$currentUpstreamMatches = [regex]::Matches($maintenance, '(?m)^- Current upstream base: `([0-9a-f]{40})`\.$')
+if ($currentUpstreamMatches.Count -ne 1) {
+    throw 'Fork maintenance must record exactly one 40-character Current upstream base'
+}
+
 foreach ($required in @('go test ./...', 'go vet ./...', 'go build ./...')) {
     if ($ci -notmatch [regex]::Escape($required)) { throw "CI missing $required" }
 }
@@ -56,6 +69,12 @@ if ($release -match 'HACKTECH_CHANGES\.md') {
 }
 if ($release -notmatch 'docs/fork-maintenance\.md') {
     throw 'Release workflow does not reference docs/fork-maintenance.md'
+}
+if ($release -notmatch [regex]::Escape('Current upstream base: `\([0-9a-f]\{40\}\)`')) {
+    throw 'Release workflow does not parse the 40-character Current upstream base'
+}
+if ($release -match [regex]::Escape('Initial upstream base: `\([0-9a-f]\{40\}\)`')) {
+    throw 'Release workflow must not parse the immutable Initial upstream base'
 }
 
 Write-Host 'workflow contract passed'

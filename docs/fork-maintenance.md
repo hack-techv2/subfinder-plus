@@ -8,10 +8,11 @@ This scope preserves compatibility with the upstream architecture while document
 
 ## Migration provenance
 
-- Former patch source: `dabsterz/subfinder-plus`
-- Imported behavior commit: `8ac9353a78565b4407f8dde949c503c5cb90781e`
-- Imported documentation commit: `9afcef859e723f85bbbb2e1f3038f860c369ac44`
+- Former patch source: [`dabsterz/subfinder-plus`](https://github.com/dabsterz/subfinder-plus)
+- Imported behavior commit: [`8ac9353a78565b4407f8dde949c503c5cb90781e`](https://github.com/dabsterz/subfinder-plus/commit/8ac9353a78565b4407f8dde949c503c5cb90781e)
+- Imported documentation commit: [`9afcef859e723f85bbbb2e1f3038f860c369ac44`](https://github.com/dabsterz/subfinder-plus/commit/9afcef859e723f85bbbb2e1f3038f860c369ac44)
 - Initial upstream base: `d0ea1029cf87ff965804fc399d12e4502c7436b2`.
+- Current upstream base: `d0ea1029cf87ff965804fc399d12e4502c7436b2`.
 
 The initial upstream base was taken from `upstream/dev`.
 
@@ -26,6 +27,10 @@ Subfinder-plus uses independent `subfinder-plus-vX.Y.Z` releases. Each release r
 
 - `subfinder-plus-windows-amd64.exe`
 - `subfinder-plus-linux-amd64`
+- `checksums.txt`
+- `LICENSE.md`
+- `DISCLAIMER.md`
+- `THANKS.md`
 
 ## Upstream synchronization
 
@@ -35,4 +40,5 @@ Subfinder-plus uses independent `subfinder-plus-vX.Y.Z` releases. Each release r
 4. Resolve conflicts while retaining only patches that remain necessary.
 5. Run all Go tests, vet, build, and source-specific regression tests.
 6. Merge through a reviewed pull request.
-7. Publish a new independent release only when RADAR should adopt the update.
+7. After the merge succeeds, advance `Current upstream base` to the exact upstream commit that was merged, validate release metadata extraction, and land that documentation update.
+8. Publish a new independent release only when RADAR should adopt the update.
