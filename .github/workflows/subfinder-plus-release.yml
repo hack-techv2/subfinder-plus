@@ -1,0 +1,65 @@
+name: Subfinder-plus release
+
+on:
+  push:
+    tags:
+      - 'subfinder-plus-v*.*.*'
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.24.1'
+          cache: true
+      - name: Validate tag
+        id: version
+        shell: bash
+        run: |
+          version="${GITHUB_REF_NAME#subfinder-plus-v}"
+          [[ "${version}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          echo "version=${version}" >> "${GITHUB_OUTPUT}"
+      - name: Test
+        run: go test ./...
+      - name: Build release artifacts
+        shell: bash
+        run: |
+          mkdir -p release
+          CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -buildvcs=false -ldflags="-s -w -buildid=" -o release/subfinder-plus-linux-amd64 ./cmd/subfinder
+          CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -trimpath -buildvcs=false -ldflags="-s -w -buildid=" -o release/subfinder-plus-windows-amd64.exe ./cmd/subfinder
+          cp LICENSE.md DISCLAIMER.md THANKS.md release/
+          (
+            cd release
+            sha256sum subfinder-plus-linux-amd64 subfinder-plus-windows-amd64.exe > checksums.txt
+          )
+      - name: Record upstream base
+        id: upstream
+        shell: bash
+        run: |
+          upstream_commit="$(sed -n 's/.*Initial upstream base: `\([0-9a-f]\{40\}\)`.*/\1/p' HACKTECH_CHANGES.md)"
+          [[ "${upstream_commit}" =~ ^[0-9a-f]{40}$ ]]
+          echo "commit=${upstream_commit}" >> "${GITHUB_OUTPUT}"
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          body: |
+            Subfinder-plus ${{ steps.version.outputs.version }}
+            Upstream base: ${{ steps.upstream.outputs.commit }}
+          files: |
+            release/subfinder-plus-linux-amd64
+            release/subfinder-plus-windows-amd64.exe
+            release/checksums.txt
+            release/LICENSE.md
+            release/DISCLAIMER.md
+            release/THANKS.md
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
