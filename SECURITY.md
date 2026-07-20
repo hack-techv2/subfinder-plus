@@ -6,11 +6,9 @@ Security fixes are evaluated for the current development branch, `dev`, and the 
 
 ## Reporting a vulnerability
 
-Report suspected vulnerabilities privately through GitHub's security advisory form:
+Use GitHub private vulnerability reporting when the repository exposes that option. If it is unavailable, open a minimal public issue requesting a private contact channel.
 
-https://github.com/hack-techv2/subfinder-plus/security/advisories/new
-
-Do not disclose credentials, target data, or exploit details in public issues, discussions, pull requests, fixtures, or logs. Provide only the minimum information needed for maintainers to reproduce and assess the issue through the private report.
+Do not include vulnerability details, credentials, target data, or exploit material in the fallback issue. Do not disclose those details in public issues, discussions, pull requests, fixtures, or logs. Provide only the minimum information needed for maintainers to reproduce and assess the issue after a private channel is available.
 
 ## Third-party passive sources
 

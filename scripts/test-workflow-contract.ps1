@@ -18,7 +18,21 @@ $ci = Get-Content -LiteralPath $ciPath -Raw
 $release = Get-Content -LiteralPath $releasePath -Raw
 $readme = Get-Content -Raw (Join-Path $repoRoot 'README.md')
 $maintenance = Get-Content -Raw (Join-Path $repoRoot 'docs/fork-maintenance.md')
+$security = Get-Content -Raw (Join-Path $repoRoot 'SECURITY.md')
+$issueConfig = Get-Content -Raw (Join-Path $repoRoot '.github/ISSUE_TEMPLATE/config.yml')
 $allWorkflows = $ci + $release
+
+if (($security + $issueConfig) -match 'github\.com/hack-techv2/subfinder-plus/security/advisories/new') {
+    throw 'Security guidance must not assume private vulnerability reporting is enabled'
+}
+if ($issueConfig -notmatch [regex]::Escape('https://github.com/hack-techv2/subfinder-plus/security/policy')) {
+    throw 'Security contact must point to the repository security policy'
+}
+foreach ($required in @('when the repository exposes that option', 'minimal public issue', 'private contact channel')) {
+    if ($security -notmatch [regex]::Escape($required)) {
+        throw "SECURITY.md is missing conditional reporting guidance: $required"
+    }
+}
 
 $initialUpstreamMatches = [regex]::Matches($maintenance, '(?m)^- Initial upstream base: `([0-9a-f]{40})`\.$')
 if ($initialUpstreamMatches.Count -ne 1) {

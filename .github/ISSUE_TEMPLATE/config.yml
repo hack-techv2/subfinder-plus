@@ -3,6 +3,6 @@ contact_links:
   - name: Subfinder-plus documentation
     url: https://github.com/hack-techv2/subfinder-plus#readme
     about: Review installation, usage, configuration, and fork scope before opening an issue.
-  - name: Security report
-    url: https://github.com/hack-techv2/subfinder-plus/security/advisories/new
-    about: Report a vulnerability privately. Do not publish sensitive details in an issue.
+  - name: Security reporting
+    url: https://github.com/hack-techv2/subfinder-plus/security/policy
+    about: Follow the policy's private-reporting or minimal-public-issue fallback instructions; do not include sensitive details publicly.
