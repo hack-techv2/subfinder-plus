@@ -23,10 +23,18 @@ type Source struct {
 	errors    int
 	results   int
 	requests  int
-	skipped   bool
 }
 
-// Run function returns all subdomains found with the service
+func apiHeaders(apiKey string) map[string]string {
+	if apiKey == "" {
+		return map[string]string{}
+	}
+	return map[string]string{"Authorization": "Bearer " + apiKey}
+}
+
+// Run function returns all subdomains found with the service.
+// Works anonymously against the public Certspotter endpoint; if an API key
+// is configured it is sent as a Bearer token to lift rate limits.
 func (s *Source) Run(ctx context.Context, domain string, session *subscraping.Session) <-chan subscraping.Result {
 	results := make(chan subscraping.Result)
 	s.errors = 0
@@ -39,17 +47,9 @@ func (s *Source) Run(ctx context.Context, domain string, session *subscraping.Se
 			close(results)
 		}(time.Now())
 
-		randomApiKey := subscraping.PickRandom(s.apiKeys, s.Name())
-		if randomApiKey == "" {
-			s.skipped = true
-			return
-		}
-
-		headers := map[string]string{"Authorization": "Bearer " + randomApiKey}
-		cookies := ""
-
+		headers := apiHeaders(subscraping.PickRandomOptional(s.apiKeys, s.Name()))
 		s.requests++
-		resp, err := session.Get(ctx, fmt.Sprintf("https://api.certspotter.com/v1/issuances?domain=%s&include_subdomains=true&expand=dns_names", domain), cookies, headers)
+		resp, err := session.Get(ctx, fmt.Sprintf("https://api.certspotter.com/v1/issuances?domain=%s&include_subdomains=true&expand=dns_names", domain), "", headers)
 		if err != nil {
 			results <- subscraping.Result{Source: s.Name(), Type: subscraping.Error, Error: err}
 			s.errors++
@@ -92,7 +92,7 @@ func (s *Source) Run(ctx context.Context, domain string, session *subscraping.Se
 			reqURL := fmt.Sprintf("https://api.certspotter.com/v1/issuances?domain=%s&include_subdomains=true&expand=dns_names&after=%s", domain, id)
 
 			s.requests++
-			resp, err := session.Get(ctx, reqURL, cookies, headers)
+			resp, err := session.Get(ctx, reqURL, "", headers)
 			if err != nil {
 				results <- subscraping.Result{Source: s.Name(), Type: subscraping.Error, Error: err}
 				s.errors++
@@ -145,7 +145,7 @@ func (s *Source) HasRecursiveSupport() bool {
 }
 
 func (s *Source) KeyRequirement() subscraping.KeyRequirement {
-	return subscraping.RequiredKey
+	return subscraping.OptionalKey
 }
 
 func (s *Source) NeedsKey() bool {
@@ -162,6 +162,5 @@ func (s *Source) Statistics() subscraping.Statistics {
 		Results:   s.results,
 		Requests:  s.requests,
 		TimeTaken: s.timeTaken,
-		Skipped:   s.skipped,
 	}
 }

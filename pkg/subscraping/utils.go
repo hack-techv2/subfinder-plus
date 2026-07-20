@@ -19,6 +19,15 @@ func PickRandom[T any](v []T, sourceName string) T {
 	return v[rand.Intn(length)]
 }
 
+func PickRandomOptional[T any](v []T, _ string) T {
+	var result T
+	length := len(v)
+	if length == 0 {
+		return result
+	}
+	return v[rand.Intn(length)]
+}
+
 func CreateApiKeys[T any](keys []string, provider func(k, v string) T) []T {
 	var result []T
 	for _, key := range keys {

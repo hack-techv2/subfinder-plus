@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	// baseURL is the URLScan API base URL
+	// baseURL is the URLScan public search endpoint (works anonymously)
 	baseURL = "https://urlscan.io/api/v1/search/"
 	// maxPages is the maximum number of pages to fetch
 	maxPages = 5
@@ -46,16 +46,23 @@ type Source struct {
 	errors    int
 	results   int
 	requests  int
-	skipped   bool
 }
 
-// Run function returns all subdomains found with the service
+func apiHeaders(apiKey string) map[string]string {
+	if apiKey == "" {
+		return map[string]string{}
+	}
+	return map[string]string{"api-key": apiKey}
+}
+
+// Run function returns all subdomains found with the service.
+// Uses urlscan.io's public search endpoint, which is available anonymously.
+// If an API key is configured it is sent to lift the anonymous rate limit.
 func (s *Source) Run(ctx context.Context, domain string, session *subscraping.Session) <-chan subscraping.Result {
 	results := make(chan subscraping.Result)
 	s.errors = 0
 	s.results = 0
 	s.requests = 0
-	s.skipped = false
 
 	go func() {
 		defer func(startTime time.Time) {
@@ -63,15 +70,7 @@ func (s *Source) Run(ctx context.Context, domain string, session *subscraping.Se
 			close(results)
 		}(time.Now())
 
-		randomApiKey := subscraping.PickRandom(s.apiKeys, s.Name())
-		if randomApiKey == "" {
-			s.skipped = true
-			return
-		}
-
-		headers := map[string]string{"api-key": randomApiKey}
-
-		// Search with wildcard to get more subdomain results
+		headers := apiHeaders(subscraping.PickRandomOptional(s.apiKeys, s.Name()))
 		s.enumerate(ctx, domain, headers, session, results)
 	}()
 
@@ -193,7 +192,7 @@ func (s *Source) HasRecursiveSupport() bool {
 }
 
 func (s *Source) KeyRequirement() subscraping.KeyRequirement {
-	return subscraping.RequiredKey
+	return subscraping.OptionalKey
 }
 
 func (s *Source) NeedsKey() bool {
@@ -210,6 +209,5 @@ func (s *Source) Statistics() subscraping.Statistics {
 		Results:   s.results,
 		Requests:  s.requests,
 		TimeTaken: s.timeTaken,
-		Skipped:   s.skipped,
 	}
 }

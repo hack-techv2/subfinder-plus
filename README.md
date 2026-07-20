@@ -147,6 +147,15 @@ Subfinder can also be used as library and a minimal examples of using subfinder 
 
 - [Recon with Me !!!](https://dhiyaneshgeek.github.io/bug/bounty/2020/02/06/recon-with-me/)
 
+## Subfinder-plus releases
+
+HackTech publishes independently versioned Subfinder-plus releases from this fork.
+
+- `subfinder-plus-windows-amd64.exe`
+- `subfinder-plus-linux-amd64`
+
+See [HACKTECH_CHANGES.md](HACKTECH_CHANGES.md) for the maintained behavior, migration provenance, version policy, and upstream synchronization procedure.
+
 # License
 
 `subfinder` is made with 🖤 by the [projectdiscovery](https://projectdiscovery.io) team. Community contributions have made the project what it is. See
