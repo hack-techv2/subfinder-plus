@@ -34,7 +34,7 @@ foreach ($required in @('when the repository exposes that option', 'minimal publ
     }
 }
 
-$initialUpstreamMatches = [regex]::Matches($maintenance, '(?m)^- Initial upstream base: `([0-9a-f]{40})`\.$')
+$initialUpstreamMatches = [regex]::Matches($maintenance, '(?m)^- Initial upstream base: `([0-9a-f]{40})`\.\r?$')
 if ($initialUpstreamMatches.Count -ne 1) {
     throw 'Fork maintenance must record exactly one 40-character Initial upstream base'
 }
@@ -42,7 +42,7 @@ if ($initialUpstreamMatches[0].Groups[1].Value -ne 'd0ea1029cf87ff965804fc399d12
     throw 'Fork maintenance changed the immutable Initial upstream base'
 }
 
-$currentUpstreamMatches = [regex]::Matches($maintenance, '(?m)^- Current upstream base: `([0-9a-f]{40})`\.$')
+$currentUpstreamMatches = [regex]::Matches($maintenance, '(?m)^- Current upstream base: `([0-9a-f]{40})`\.\r?$')
 if ($currentUpstreamMatches.Count -ne 1) {
     throw 'Fork maintenance must record exactly one 40-character Current upstream base'
 }
