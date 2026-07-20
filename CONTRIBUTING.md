@@ -10,7 +10,7 @@ Thank you for helping maintain Subfinder-plus. Keep changes focused, preserve th
 
 ## Development setup
 
-Install Go 1.24.1, clone the repository, and work from the `dev` contribution target:
+Install Go 1.24.1, clone the repository, and work from the `dev` contribution branch:
 
 ```powershell
 git clone https://github.com/hack-techv2/subfinder-plus.git

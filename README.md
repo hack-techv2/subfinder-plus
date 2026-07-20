@@ -88,7 +88,7 @@ This fork preserves the existing ProjectDiscovery Subfinder Go module path and p
 
 ## Contributing
 
-Contributions should preserve Subfinder's CLI compatibility and keep the maintained fork delta narrow. Open a focused change with tests for source behavior and describe any provider-facing assumptions.
+Contributions should preserve Subfinder's CLI compatibility and keep the maintained fork delta narrow. See [CONTRIBUTING.md](CONTRIBUTING.md) for setup, validation, and pull-request guidance.
 
 ## Security
 
@@ -96,7 +96,7 @@ Report suspected vulnerabilities according to [SECURITY.md](SECURITY.md). Do not
 
 ## Attribution
 
-Subfinder-plus builds on ProjectDiscovery Subfinder. Selected public-source behavior was adapted from or inspired by BBOT as described in the [fork maintenance reference](docs/fork-maintenance.md).
+Subfinder-plus builds on ProjectDiscovery Subfinder. Selected public-source behavior was adapted from or inspired by BBOT as described in the [fork maintenance reference](docs/fork-maintenance.md). See [THANKS.md](THANKS.md) for attribution details.
 
 ## License
 
