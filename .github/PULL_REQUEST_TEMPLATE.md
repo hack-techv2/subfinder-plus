@@ -1,16 +1,17 @@
 ## Proposed changes
 
-<!-- Describe the overall picture of your modifications to help maintainers understand the pull request. PRs are required to be associated to their related issue tickets or feature request. -->
+<!-- Describe what changed and why. -->
 
 ### Proof
 
-<!-- How has this been tested? Please describe the tests that you ran to verify your changes. -->
+<!-- State the commands and focused tests you ran, with their results. -->
 
 ## Checklist
 
-<!-- Put an "x" in the boxes that apply. You can also fill these out after creating the PR. If you're unsure about any of them, don't hesitate to ask. We're here to help! This is simply a reminder of what we are going to look for before merging your code. -->
+<!-- Check every applicable item before requesting review. -->
 
-- [ ] Pull request is created against the [dev](https://github.com/projectdiscovery/subfinder/tree/dev) branch
-- [ ] All checks passed (lint, unit/integration/regression tests etc.) with my changes
-- [ ] I have added tests that prove my fix is effective or that my feature works
-- [ ] I have added necessary documentation (if appropriate)
+- [ ] The pull request targets the `dev` branch.
+- [ ] `go test ./...`, `go vet ./...`, and `go build ./...` pass.
+- [ ] Source behavior changes include focused tests.
+- [ ] User-visible changes include documentation.
+- [ ] No credentials, target data, generated binaries, or build artifacts are committed.

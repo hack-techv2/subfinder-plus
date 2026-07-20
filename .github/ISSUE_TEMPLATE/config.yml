@@ -1,14 +1,8 @@
 blank_issues_enabled: false
-
 contact_links:
-  - name: Ask an question / advise on using subfinder
-    url: https://github.com/projectdiscovery/subfinder/discussions/categories/q-a
-    about: Ask a question or request support for using subfinder
-
-  - name: Share idea / feature to discuss for subfinder
-    url: https://github.com/projectdiscovery/subfinder/discussions/categories/ideas
-    about: Share idea / feature to discuss for subfinder
-
-  - name: Connect with PD Team (Discord)
-    url: https://discord.gg/projectdiscovery
-    about: Connect with PD Team for direct communication
+  - name: Subfinder-plus documentation
+    url: https://github.com/hack-techv2/subfinder-plus#readme
+    about: Review installation, usage, configuration, and fork scope before opening an issue.
+  - name: Security report
+    url: https://github.com/hack-techv2/subfinder-plus/security/advisories/new
+    about: Report a vulnerability privately. Do not publish sensitive details in an issue.
