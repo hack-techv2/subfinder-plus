@@ -1,18 +1,24 @@
-# HackTech Subfinder-plus changes
+# Fork maintenance
 
-This repository is maintained as a public fork of `projectdiscovery/subfinder`.
+## Ownership and scope
 
-## Local behavior
+Subfinder supplies the engine, CLI, packages, and upstream update stream. BBOT informed selected public-source access behavior; DNSDumpster is the explicit code-level adaptation. Subfinder-plus owns only the maintained delta, tests, release tags, and fork documentation.
 
-- CertSpotter and URLScan can operate anonymously and use configured keys only for authenticated or rate-limited access.
-- DNSDumpster uses its public short-lived web flow without accepting a provider API key.
+This scope preserves compatibility with the upstream architecture while documenting the small, independently maintained source-behavior delta.
 
 ## Migration provenance
 
 - Former patch source: `dabsterz/subfinder-plus`
 - Imported behavior commit: `8ac9353a78565b4407f8dde949c503c5cb90781e`
 - Imported documentation commit: `9afcef859e723f85bbbb2e1f3038f860c369ac44`
-- Initial upstream base: `d0ea1029cf87ff965804fc399d12e4502c7436b2` from `upstream/dev`
+- Initial upstream base: `d0ea1029cf87ff965804fc399d12e4502c7436b2`.
+
+The initial upstream base was taken from `upstream/dev`.
+
+## Maintained behavior
+
+- CertSpotter and URLScan can operate anonymously and use configured keys only for authenticated or rate-limited access.
+- DNSDumpster uses its public short-lived web flow without accepting a provider API key.
 
 ## Release policy
 

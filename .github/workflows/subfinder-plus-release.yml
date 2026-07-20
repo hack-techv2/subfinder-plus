@@ -45,7 +45,7 @@ jobs:
         id: upstream
         shell: bash
         run: |
-          upstream_commit="$(sed -n 's/.*Initial upstream base: `\([0-9a-f]\{40\}\)`.*/\1/p' HACKTECH_CHANGES.md)"
+          upstream_commit="$(sed -n 's/.*Initial upstream base: `\([0-9a-f]\{40\}\)`.*/\1/p' docs/fork-maintenance.md)"
           [[ "${upstream_commit}" =~ ^[0-9a-f]{40}$ ]]
           echo "commit=${upstream_commit}" >> "${GITHUB_OUTPUT}"
       - name: Publish GitHub Release

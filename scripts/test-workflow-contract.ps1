@@ -16,6 +16,8 @@ if ($workflowDifference.Count -ne 0) {
 
 $ci = Get-Content -LiteralPath $ciPath -Raw
 $release = Get-Content -LiteralPath $releasePath -Raw
+$readme = Get-Content -Raw (Join-Path $repoRoot 'README.md')
+$maintenance = Get-Content -Raw (Join-Path $repoRoot 'docs/fork-maintenance.md')
 $allWorkflows = $ci + $release
 
 foreach ($required in @('go test ./...', 'go vet ./...', 'go build ./...')) {
@@ -36,5 +38,24 @@ foreach ($forbidden in @('dockerhub', 'slack', 'discord', 'SECURITYTRAILS_API_KE
 
 if ($release -notmatch 'contents:\s*write') { throw 'release missing contents: write permission' }
 if ($release -notmatch '\^\[0-9\]\+\\\.\[0-9\]\+\\\.\[0-9\]\+\$') { throw 'release missing independent SemVer validation' }
+
+foreach ($required in @(
+    'Subfinder-plus',
+    'ProjectDiscovery Subfinder',
+    'BBOT',
+    'docs/free-source-coverage.md',
+    'docs/fork-maintenance.md'
+)) {
+    if ($readme -notmatch [regex]::Escape($required)) {
+        throw "README.md is missing required documentation marker: $required"
+    }
+}
+
+if ($release -match 'HACKTECH_CHANGES\.md') {
+    throw 'Release workflow still references HACKTECH_CHANGES.md'
+}
+if ($release -notmatch 'docs/fork-maintenance\.md') {
+    throw 'Release workflow does not reference docs/fork-maintenance.md'
+}
 
 Write-Host 'workflow contract passed'

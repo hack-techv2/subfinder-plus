@@ -1,164 +1,90 @@
-<h1 align="center">
-  <img src="static/subfinder-logo.png" alt="subfinder" width="200px">
-  <br>
-</h1>
+# Subfinder-plus
 
-<h4 align="center">Fast passive subdomain enumeration tool.</h4>
+Subfinder's passive-enumeration engine with selected free-access source behavior adapted from or inspired by BBOT.
 
+[![Go CI](https://github.com/hack-techv2/subfinder-plus/actions/workflows/ci.yml/badge.svg)](https://github.com/hack-techv2/subfinder-plus/actions/workflows/ci.yml)
+[![Latest Subfinder-plus release](https://img.shields.io/github/v/release/hack-techv2/subfinder-plus?label=release)](https://github.com/hack-techv2/subfinder-plus/releases/latest)
 
-<p align="center">
-<a href="https://goreportcard.com/report/github.com/projectdiscovery/subfinder/v2"><img src="https://goreportcard.com/badge/github.com/projectdiscovery/subfinder"></a>
-<a href="https://github.com/projectdiscovery/subfinder/issues"><img src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat"></a>
-<a href="https://github.com/projectdiscovery/subfinder/releases"><img src="https://img.shields.io/github/release/projectdiscovery/subfinder"></a>
-<a href="https://twitter.com/pdiscoveryio"><img src="https://img.shields.io/twitter/follow/pdiscoveryio.svg?logo=twitter"></a>
-<a href="https://discord.gg/projectdiscovery"><img src="https://img.shields.io/discord/695645237418131507.svg?logo=discord"></a>
-</p>
+Subfinder-plus is a HackTech-maintained fork of ProjectDiscovery Subfinder. It preserves Subfinder's CLI and Go architecture while carrying a narrow set of source changes intended to improve useful enumeration without paid service subscriptions. DNSDumpster mirrors BBOT's public web-flow approach; CertSpotter and URLScan use their anonymous endpoints and accept optional keys for higher service limits.
 
-<p align="center">
-  <a href="#features">Features</a> •
-  <a href="#installation">Install</a> •
-  <a href="#running-subfinder">Usage</a> •
-  <a href="#post-installation-instructions">API Setup</a> •
-  <a href="#subfinder-go-library">Library</a> •
-  <a href="https://discord.gg/projectdiscovery">Join Discord</a>
-</p>
+This is not a full merger with BBOT and is not affiliated with or endorsed by ProjectDiscovery or the BBOT project.
 
----
+## Scope and authorization
 
+Use Subfinder-plus only against domains and systems you own or are explicitly authorized to assess. Passive data sources remain subject to their own terms, quotas, and availability.
 
-`subfinder` is a subdomain discovery tool that returns valid subdomains for websites, using passive online sources. It has a simple, modular architecture and is optimized for speed. `subfinder` is built for
-doing one thing only - passive subdomain enumeration, and it does that very well.
+## Prerequisites
 
-We have made it to comply with all the used passive source licenses and usage restrictions. The passive model guarantees speed and stealthiness that can be leveraged by both penetration testers and bug bounty
-hunters alike.
+- Go 1.24.1 for source builds.
+- Docker, if building the container image.
 
-# Features
+## Install
 
-<h1 align="left">
-  <img src="static/subfinder-run.png" alt="subfinder" width="700px"></a>
-  <br>
-</h1>
+### Download a release
 
-- Fast and powerful resolution and wildcard elimination modules
-- **Curated** passive sources to maximize results
-- Multiple output formats supported (JSON, file, stdout)
-- Optimized for speed and **lightweight** on resources
-- **STDIN/OUT** support enables easy integration into workflows
+Download the current archive from the [latest Subfinder-plus release](https://github.com/hack-techv2/subfinder-plus/releases/latest), verify its checksum, then place the platform binary on your `PATH`.
 
-# Usage
+### Build from source
 
 ```sh
-subfinder -h
+git clone https://github.com/hack-techv2/subfinder-plus.git
+cd subfinder-plus
+go build -o subfinder-plus ./cmd/subfinder
 ```
 
-This will display help for the tool. Here are all the switches it supports.
-
-```yaml
-Usage:
-  ./subfinder [flags]
-
-Flags:
-INPUT:
-  -d, -domain string[]  domains to find subdomains for
-  -dL, -list string     file containing list of domains for subdomain discovery
-
-SOURCE:
-  -s, -sources string[]           specific sources to use for discovery (-s crtsh,github). Use -ls to display all available sources.
-  -recursive                      use only sources that can handle subdomains recursively (e.g. subdomain.domain.tld vs domain.tld)
-  -all                            use all sources for enumeration (slow)
-  -es, -exclude-sources string[]  sources to exclude from enumeration (-es alienvault,zoomeyeapi)
-
-FILTER:
-  -m, -match string[]   subdomain or list of subdomain to match (file or comma separated)
-  -f, -filter string[]   subdomain or list of subdomain to filter (file or comma separated)
-
-RATE-LIMIT:
-  -rl, -rate-limit int  maximum number of http requests to send per second
-  -rls value            maximum number of http requests to send per second for providers in key=value format (-rls "hackertarget=10/s,shodan=15/s")
-  -t int                number of concurrent goroutines for resolving (-active only) (default 10)
-
-UPDATE:
-  -up, -update                 update subfinder to latest version
-  -duc, -disable-update-check  disable automatic subfinder update check
-
-OUTPUT:
-  -o, -output string       file to write output to
-  -oJ, -json               write output in JSONL(ines) format
-  -oD, -output-dir string  directory to write output (-dL only)
-  -cs, -collect-sources    include all sources in the output (-json only)
-  -oI, -ip                 include host IP in output (-active only)
-
-CONFIGURATION:
-  -config string                flag config file (default "$CONFIG/subfinder/config.yaml")
-  -pc, -provider-config string  provider config file (default "$CONFIG/subfinder/provider-config.yaml")
-  -r string[]                   comma separated list of resolvers to use
-  -rL, -rlist string            file containing list of resolvers to use
-  -nW, -active                  display active subdomains only
-  -proxy string                 http proxy to use with subfinder
-  -ei, -exclude-ip              exclude IPs from the list of domains
-  -mr, -max-results int         limit the number of results per source (0 = unlimited; honored by paginating sources such as virustotal)
-
-DEBUG:
-  -silent             show only subdomains in output
-  -version            show version of subfinder
-  -v                  show verbose output
-  -nc, -no-color      disable color in output
-  -ls, -list-sources  list all available sources
-
-OPTIMIZATION:
-  -timeout int   seconds to wait before timing out (default 30)
-  -max-time int  minutes to wait for enumeration results (default 10)
-```
-
-## Environment Variables
-
-Subfinder supports environment variables to specify custom paths for configuration files:
-
-- `SUBFINDER_CONFIG` - Path to config.yaml file (overrides default `$CONFIG/subfinder/config.yaml`)
-- `SUBFINDER_PROVIDER_CONFIG` - Path to provider-config.yaml file (overrides default `$CONFIG/subfinder/provider-config.yaml`)
-
-# Installation
-
-`subfinder` requires **go1.24** to install successfully. Run the following command to install the latest version:
+### Build with Docker
 
 ```sh
-go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
+docker build -t subfinder-plus .
+docker run --rm subfinder-plus -d example.com -silent
 ```
 
-Learn about more ways to install subfinder here: https://docs.projectdiscovery.io/tools/subfinder/install.
+## Usage
 
-## Post Installation Instructions
+```sh
+subfinder-plus -d example.com -silent
+```
 
-`subfinder` can be used right after the installation, however many sources required API keys to work. Learn more here: https://docs.projectdiscovery.io/tools/subfinder/install#post-install-configuration.
+Use `subfinder-plus -h` as the authoritative reference for flags available in the release you run. Common options include `-d` for a domain, `-dL` for a domain list, `-o` for output, `-silent` for only discovered names, `-s` to choose sources, and `-es` to exclude sources.
 
-## Running Subfinder
+To inspect the current source names before selecting them, run:
 
-Learn about how to run Subfinder here: https://docs.projectdiscovery.io/tools/subfinder/running.
+```sh
+subfinder-plus -ls
+```
 
-## Subfinder Go library
+## Free-access source behavior
 
-Subfinder can also be used as library and a minimal examples of using subfinder SDK is available [here](examples/main.go)
+The fork's selected free-access behavior covers DNSDumpster, CertSpotter, and URLScan. It does not make every inherited source key-free or remove provider rate limits. See the [free-access source coverage reference](docs/free-source-coverage.md) for the supported behavior and its limits.
 
-</td>
-</tr>
-</table>
+## Configuration
 
-### Resources
+Subfinder-plus follows Subfinder's existing configuration layout. By default, it uses `config.yaml` and `provider-config.yaml` in the Subfinder application-config directory; override them with `-config`, `-pc`, `SUBFINDER_CONFIG`, or `SUBFINDER_PROVIDER_CONFIG`.
 
-- [Recon with Me !!!](https://dhiyaneshgeek.github.io/bug/bounty/2020/02/06/recon-with-me/)
+Optional provider credentials belong in the provider configuration. Supplying them can raise limits where a provider offers that capability; it does not change the authorization requirements for using the service.
 
-## Subfinder-plus releases
+## Go library
 
-HackTech publishes independently versioned Subfinder-plus releases from this fork.
+This fork preserves the existing ProjectDiscovery Subfinder Go module path and package layout for compatibility. Build applications against the module requirements in `go.mod`, and review [examples/main.go](examples/main.go) for the current library usage pattern.
 
-- `subfinder-plus-windows-amd64.exe`
-- `subfinder-plus-linux-amd64`
+## Documentation
 
-See [HACKTECH_CHANGES.md](HACKTECH_CHANGES.md) for the maintained behavior, migration provenance, version policy, and upstream synchronization procedure.
+- [Free-access source coverage](docs/free-source-coverage.md)
+- [Fork maintenance](docs/fork-maintenance.md)
+- [Security policy](SECURITY.md)
 
-# License
+## Contributing
 
-`subfinder` is made with 🖤 by the [projectdiscovery](https://projectdiscovery.io) team. Community contributions have made the project what it is. See
-the **[THANKS.md](https://github.com/projectdiscovery/subfinder/blob/main/THANKS.md)** file for more details.
+Contributions should preserve Subfinder's CLI compatibility and keep the maintained fork delta narrow. Open a focused change with tests for source behavior and describe any provider-facing assumptions.
 
-Read the usage disclaimer at [DISCLAIMER.md](https://github.com/projectdiscovery/subfinder/blob/main/DISCLAIMER.md) and [contact us](mailto:contact@projectdiscovery.io) for any API removal.
+## Security
+
+Report suspected vulnerabilities according to [SECURITY.md](SECURITY.md). Do not disclose credentials, target data, or exploit details in public issues.
+
+## Attribution
+
+Subfinder-plus builds on ProjectDiscovery Subfinder. Selected public-source behavior was adapted from or inspired by BBOT as described in the [fork maintenance reference](docs/fork-maintenance.md).
+
+## License
+
+Subfinder-plus is distributed under the repository's [MIT License](LICENSE.md). Review [DISCLAIMER.md](DISCLAIMER.md) before using third-party sources.
